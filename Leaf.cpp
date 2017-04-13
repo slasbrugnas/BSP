@@ -2,7 +2,10 @@
 
 Leaf::Leaf()
 {
-
+    m_cadre.top = 0;
+    m_cadre.left = 0;
+    m_cadre.height = 0;
+    m_cadre.width = 0;
 }
 
 Leaf::Leaf(sf::FloatRect cadre)
