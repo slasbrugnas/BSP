@@ -10,9 +10,30 @@ const int H = 768;
 
 using namespace std;
 
+void change_seed(sf::Event d, unsigned int & seed)
+{
+    switch(d.key.code)
+    {
+        case sf::Keyboard::Up:
+            seed += 65536;
+            break;
+        case sf::Keyboard::Down:
+            seed -= 65536;
+            break;
+        case sf::Keyboard::Left:
+            seed--;
+            break;
+        case sf::Keyboard::Right:
+            seed++;
+            break;
+        default:;
+            break;
+    }
+}
+
 int main()
 {
-    unsigned long seed;
+    unsigned int seed;
     srand(time(NULL));
     cout << "Choix du seed" << endl;
     cout << "1. Aléatoire" << endl;
@@ -52,15 +73,6 @@ int main()
     bool seedChanged = false;
     while(window.isOpen())
     {
-        srand(seed);
-
-        if(seedChanged)
-        {
-            cout << "seed : " << std::hex << seed << endl;
-            dungeon = *new Dungeon(sf::FloatRect(10,10,W-20,H-20));
-            seedChanged = false;
-        }
-
         while(window.pollEvent(event))
         {
             switch(event.type)
@@ -70,12 +82,16 @@ int main()
             case sf::Event::KeyPressed:
                 switch(event.key.code)
                 {
-                case sf::Keyboard::Left:
-                    seed--;
+                case sf::Keyboard::J:
+                    cout << "jump to seed ?" << endl;
+                    cin >> seed;
                     seedChanged = true;
                     break;
+                case sf::Keyboard::Up:
+                case sf::Keyboard::Down:
+                case sf::Keyboard::Left:
                 case sf::Keyboard::Right:
-                    seed++;
+                    change_seed(event,seed);
                     seedChanged = true;
                     break;
                 case sf::Keyboard::Escape:
@@ -86,6 +102,14 @@ int main()
 
             default:
                 break;
+            }
+            srand(seed);
+            if(seedChanged)
+            {
+
+                cout << "seed : 0x" << std::hex << seed << endl;
+                dungeon = *new Dungeon(sf::FloatRect(10,10,W-20,H-20));
+                seedChanged = false;
             }
 
             window.clear(fadeBlack);
