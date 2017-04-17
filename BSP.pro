@@ -7,9 +7,11 @@ QMAKE_CXXFLAGS += -std=c++11 -pedantic -Wall -Wextra
 
 LIBS           += -lsfml-graphics -lsfml-window -lsfml-system
 
-SOURCES += main.cpp \
-    Leaf.cpp
+SOURCES += main.cc \
+    Frame.cc \
+    Dungeon.cc
 
 HEADERS += \
-    Leaf.h
+    Frame.h \
+    Dungeon.h
 
