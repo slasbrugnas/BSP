@@ -9,11 +9,8 @@ Frame::Frame(sf::FloatRect cadre)
 
 Frame::~Frame()
 {
-    /*while(isLast != true)
-    {
-        delete m_first_child;
-        delete m_second_child;
-    }*/
+    delete m_first_child;
+    delete m_second_child;
 }
 
 sf::FloatRect Frame::getCadre() const
@@ -45,7 +42,7 @@ void Frame::slice()
         {
             m_first_child->setCadre(sf::FloatRect(m_cadre.left,
                                                   m_cadre.top,
-                                                  (rand() % static_cast<int>(0.2*m_cadre.width))+(0.4*m_cadre.width),
+                                                  (rand() % static_cast<int>(0.6*m_cadre.width))+(0.2*m_cadre.width),
                                                   m_cadre.height));
 
             m_second_child->setCadre(sf::FloatRect(m_cadre.left+m_first_child->getCadre().width,
@@ -58,7 +55,7 @@ void Frame::slice()
             m_first_child->setCadre(sf::FloatRect(m_cadre.left,
                                                   m_cadre.top,
                                                   m_cadre.width,
-                                                  (rand() % static_cast<int>(0.2*m_cadre.height))+(0.4*m_cadre.height)));
+                                                  (rand() % static_cast<int>(0.6*m_cadre.height))+(0.2*m_cadre.height)));
 
             m_second_child->setCadre(sf::FloatRect(m_cadre.left,
                                                    m_cadre.top+m_first_child->getCadre().height,
@@ -73,37 +70,35 @@ void Frame::slice()
 // Dessine les cadres pour l'instant
 void Frame::define_room()
 {
-    float randPosX,randPosY;
-    //if(static_cast<int>(0.15*m_cadre.left) == 0)
-        randPosX = m_cadre.left;
-    /*else
-        randPosX = (rand() % static_cast<int>(0.15*m_cadre.left))+(m_cadre.left);*/
-    //if(static_cast<int>(0.15*m_cadre.top) == 0)
-        randPosY = m_cadre.top;
-    /*else
-        randPosY = (rand() % static_cast<int>(0.15*m_cadre.top))+(m_cadre.top);*/
+    m_room.setSize({(rand() % static_cast<int>(0.25*m_cadre.width)) + (0.75*m_cadre.width),
+                    (rand() % static_cast<int>(0.25*m_cadre.height)) + (0.75*m_cadre.height)});
+
+    float randPosX = m_cadre.left + (m_cadre.width - m_room.getSize().x)/2;
+    float randPosY = m_cadre.top  + (m_cadre.height- m_room.getSize().y)/2;
+
     m_room.setPosition({randPosX,
                         randPosY});
-    m_room.setSize({(rand() % static_cast<int>(0.5*m_cadre.width)) + (0.5*m_cadre.width),
-                    (rand() % static_cast<int>(0.5*m_cadre.height)) + (0.5*m_cadre.height)});
-    m_room.setFillColor(sf::Color(235,235,235,122));
+
+    m_room.setFillColor(sf::Color(220,220,220));
 
     m_dessin_cadre.setPosition({m_cadre.left,m_cadre.top});
     m_dessin_cadre.setSize({m_cadre.width,m_cadre.height});
     m_dessin_cadre.setOutlineThickness(1.0f);
     m_dessin_cadre.setFillColor(sf::Color::Transparent);
-    if(m_cadre.height == m_cadre.width)
+    /* Coloration des cadres en fonction de la largeur et de la hauteur
+     * if(m_cadre.height < m_cadre.width)
         m_dessin_cadre.setOutlineColor(sf::Color(235,20,20));
     else
-        m_dessin_cadre.setOutlineColor(sf::Color(235,235,235));
+        m_dessin_cadre.setOutlineColor(sf::Color(20,235,20));*/
+    m_dessin_cadre.setOutlineColor(sf::Color(235,235,235));
 }
 
 void Frame::draw_to(sf::RenderWindow& window)
 {
     if(isLast)
     {
-        //window.draw(m_room);
-        window.draw(m_dessin_cadre);
+        window.draw(m_room);
+        //window.draw(m_dessin_cadre);
     }
     else
     {

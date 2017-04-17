@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ctime>
+#include <climits>
 #include <random>
 #include <SFML/Graphics.hpp>
 #include "Dungeon.h"
@@ -15,16 +16,20 @@ void change_seed(sf::Event d, unsigned int & seed)
     switch(d.key.code)
     {
         case sf::Keyboard::Up:
-            seed += 65536;
-            break;
-        case sf::Keyboard::Down:
+        if(!(seed >= 0x00000001 && seed <= 0x0000ffff))
             seed -= 65536;
             break;
+        case sf::Keyboard::Down:
+        if(!(seed >= 0xffff0000 && seed <= 0xffffffff))
+            seed += 65536;
+            break;
         case sf::Keyboard::Left:
-            seed--;
+        if((seed-1) % 16384 != 0)
+            --seed;
             break;
         case sf::Keyboard::Right:
-            seed++;
+        if((seed+1) % 16384 != 0)
+            ++seed;
             break;
         default:;
             break;
@@ -47,7 +52,7 @@ int main()
         switch(choix)
         {
         case 1:
-            seed = rand();
+            seed = rand()+1;
             break;
         case 2:
             cout << "seed ?" << endl;
@@ -85,6 +90,8 @@ int main()
                 case sf::Keyboard::J:
                     cout << "jump to seed ?" << endl;
                     cin >> seed;
+                    if(seed == 0)
+                        seed = 1;
                     seedChanged = true;
                     break;
                 case sf::Keyboard::Up:
@@ -107,7 +114,7 @@ int main()
             if(seedChanged)
             {
 
-                cout << "seed : 0x" << std::hex << seed << endl;
+                cout << "seed : 0x" << std::hex << seed << std::dec << " (" << static_cast<int>(seed) << ")" <<  endl;
                 dungeon = *new Dungeon(sf::FloatRect(10,10,W-20,H-20));
                 seedChanged = false;
             }
