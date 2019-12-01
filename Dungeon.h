@@ -13,7 +13,6 @@ public:
     Dungeon(sf::FloatRect size);
     void generate();
     void slice();
-    void fill();
     void draw_to(sf::RenderWindow& window);
 };
 

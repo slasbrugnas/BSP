@@ -8,22 +8,35 @@
 class Frame
 {
 private:
-    sf::FloatRect m_cadre;
-    static const int m_min_frame_size = 70;
-    Frame *m_first_child,
+    sf::FloatRect m_frame;
+    static const int m_min_frame_size = 300;
+    static int m_max_depth;
+
+    Frame *m_parent,
+          *m_first_child,
           *m_second_child;
+    
+    sf::RectangleShape m_frame_border;
+    sf::RectangleShape m_path;
     sf::RectangleShape m_room;
-    sf::RectangleShape m_dessin_cadre;
+
+    int m_depth;
+
     bool isLast;
 public:
-    Frame(sf::FloatRect cadre);
+    Frame(sf::FloatRect cadre, Frame *parent = nullptr);
     ~Frame();
 
-    sf::FloatRect getCadre() const;
+    sf::FloatRect getFrame() const;
     void setCadre(sf::FloatRect);
+    Frame * getFirstChild() const;
+    Frame * getSecondChild() const;
+    int getDepth() const;
+    void setDepth(int depth);
 
     void slice();
     void define_room();
+    void make_path();
     void draw_to(sf::RenderWindow& window);
 };
 
