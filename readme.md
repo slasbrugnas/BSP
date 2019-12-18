@@ -1,6 +1,6 @@
 Compile & Execute:
 ```bash
-g++ -c main.cc Dungeon.cc Frame.cc && g++ main.o Dungeon.o Frame.o  -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system && ./sfml-app
+g++ -c main.cc Dungeon.cc Frame.cc && g++ main.o Dungeon.o Frame.o  -o bsp_dungeon -lsfml-graphics -lsfml-window -lsfml-system && ./bsp_dungeon
 ```
 
 ## Current state
